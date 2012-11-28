@@ -91,7 +91,7 @@ function _ayah_get_ayah_placement($form_id, $form) {
     }
   }
   // Query the placement map.
-  if (array_key_exists($form_id, $placement_map)) {
+  if (isset($placement_map['form_id'])) {
     $placement = $placement_map[$form_id];
   }
   // If no placement info is available in placement map:
@@ -193,7 +193,7 @@ function _ayah_insert_game_element(&$form, $placement, $ayah_element) {
   }
 
   // If no target is available: just append the AYAH element to the container.
-  if ($target_key == NULL || !array_key_exists($target_key, $form_stepper)) {
+  if ($target_key == NULL || !isset($target_key)) {
     // Optionally, set weight of AYAH element.
     if ($target_weight != NULL) {
       $ayah_element['#weight'] = $target_weight;
@@ -230,7 +230,7 @@ function _ayah_insert_game_element(&$form, $placement, $ayah_element) {
  * Internal:
  * Makes a call with CURL
  */
-function _ayah_doCall($url, $fields, $use_timeout = FALSE) {
+function _ayah_do_call($url, $fields, $use_timeout = FALSE) {
   $fields_string = "";
   foreach ($fields as $key => $value) {
     if (is_array($value)) {
@@ -257,13 +257,13 @@ function _ayah_doCall($url, $fields, $use_timeout = FALSE) {
 
   if ($result) {
     try {
-      $m = json_decode($result);
+      $m = drupal_json_decode($result);
     } catch (Exception $e) {
-      error_log("AYAH::doCall() - Exception when calling json_decode: " . $e->getMessage());
+      watchdog("AYAH::do_call() - Exception when calling drupal_json_decode: " . $e->getMessage());
       $m = NULL;
     }
   }
-  else{
+  else {
     $m = NULL;
   }
   curl_close($curlsession);

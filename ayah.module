@@ -125,7 +125,8 @@ function theme_ayah($variables) {
   $ayah_web_service_host = "ws.areyouahuman.com";
   $ayah_publisher_key = variable_get('ayah_publisher_key', '');
   $url = 'https://' . $ayah_web_service_host . "/ws/script/" . urlencode($ayah_publisher_key);
-  return "<div id='AYAH'></div><script src='" . $url . "'></script>";
+  drupal_add_js($url, 'external');
+  return "<div id='AYAH'></div>";
 }
 
 /**
@@ -180,7 +181,7 @@ function ayah_validate($element, &$form_state) {
 
   module_load_include('inc', 'ayah');
   $session_secret = NULL;
-  if (array_key_exists("session_secret", $_REQUEST)) {
+  if (isset($_REQUEST['session_secret'])) {
     $session_secret = $_REQUEST["session_secret"];
   }
   $ayah_web_service_host = 'ws.areyouahuman.com';
@@ -191,9 +192,9 @@ function ayah_validate($element, &$form_state) {
       'session_secret' => urlencode($session_secret),
       'scoring_key' => variable_get('ayah_scoring_key', ''),
     );
-    $resp = _ayah_doCall($url, $fields);
+    $resp = _ayah_do_call($url, $fields);
     if ($resp) {
-      $is_a_human = ($resp->status_code == 1);
+      $is_a_human = ($resp['status_code'] == 1);
     }
   }
   if (!$is_a_human) {
@@ -205,7 +206,12 @@ function ayah_validate($element, &$form_state) {
     // ayah_validate(), does not check error conditions of extra form elements
     // like the the AYAH game.
     if ($form_id == 'user_login' || $form_id == 'user_login_block') {
-      drupal_goto($_GET['q']);
+      if (url_is_external($_GET['q'])) {
+        drupal_goto();
+      } 
+      else {
+        drupal_goto($_GET['q']);
+      }
     }
   }
 }

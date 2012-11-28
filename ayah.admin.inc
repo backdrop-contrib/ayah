@@ -38,7 +38,7 @@ function ayah_admin_settings() {
     // Additional operations.
       $form['ayah_form_protection']['ayah_form_id_overview']['ayah_ayah_forms'][$ayah_point->form_id]['operations'] = array(
         '#markup' => implode(", ", array(
-          l(t('delete'), "admin/user/ayah/ayah_game/{$ayah_point->form_id}/delete"),
+          l(t('delete'), "admin/user/ayah/ayah_game/" . $ayah_point->form_id . "/delete"),
         )),
       );
   }
@@ -167,7 +167,7 @@ function ayah_game_admin($ayah_form_id = NULL, $op = NULL) {
 /**
  * Confirm dialog for deleting a form.
  */
-function ayah_game_formdelete_confirm(&$form_state, $ayah_form_id, $delete) {
+function ayah_game_formdelete_confirm(&$form_state, &$ayah_form_id, $delete) {
   $form = array();
   $form['ayah_game_form_id'] = array(
     '#type' => 'value',
@@ -181,7 +181,7 @@ function ayah_game_formdelete_confirm(&$form_state, $ayah_form_id, $delete) {
     $message = t('Are you sure you want to delete the AYAH game for form_id %form_id?', array('%form_id' => $ayah_form_id));
     $yes = t('Delete');
   }
-  return confirm_form($form, check_plain($message), 'admin/user/ayah', '', check_plain($yes));
+  return confirm_form($form, $message, 'admin/user/ayah', '', $yes);
 }
 
 /**
