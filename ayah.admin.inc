@@ -76,11 +76,11 @@ function ayah_admin_settings() {
     '#default_value' => variable_get('ayah_scoring_key', ''),
     '#description' => t('The Scoring Key associated with your domain on the <a href="http://portal.areyouahuman.com/" target="_blank">portal</a>'),
   );
-  // Submit button.
-  $form['submit'] = array(
-    '#type' => 'submit',
-    '#value' => t('Save configuration'),
-  );
+  
+  $form = system_settings_form($form);
+  
+  $form['#submit'][] = 'ayah_admin_settings_submit';
+  
   return $form;
 }
 
@@ -139,10 +139,6 @@ function ayah_admin_settings_submit($form, &$form_state) {
     ayah_set_form_id_setting($ayah_new_form_id, $ayah_type);
     drupal_set_message(t('Added ayah form.'), 'status');
   }
-  variable_set('ayah_allow_on_admin_pages', $form_state['values']['ayah_allow_on_admin_pages']);
-  variable_set('ayah_publisher_key', $form_state['values']['ayah_publisher_key']);
-  variable_set('ayah_scoring_key', $form_state['values']['ayah_scoring_key']);
-  drupal_set_message(t('The ayah settings were saved.'), 'status');
 }
 
 /**
