@@ -228,7 +228,7 @@ function _ayah_insert_game_element(&$form, $placement, $ayah_element) {
 
 /**
  * Internal:
- * Makes a call with CURL
+ * Makes a call with drupal_http_request.
  */
 function _ayah_do_call($url, $fields, $use_timeout = FALSE) {
   $fields_string = "";
@@ -238,26 +238,23 @@ function _ayah_do_call($url, $fields, $use_timeout = FALSE) {
         $fields_string .= $key . '[]=' . $v . '&';
       }
     }
-    else{
+    else {
       $fields_string .= $key . '=' . $value . '&';
     }
   }
   rtrim($fields_string, '&');
-  $curlsession = curl_init();
-  curl_setopt($curlsession, CURLOPT_URL, $url);
-  curl_setopt($curlsession, CURLOPT_POST, count($fields));
-  curl_setopt($curlsession, CURLOPT_POSTFIELDS, $fields_string);
-  curl_setopt($curlsession, CURLOPT_RETURNTRANSFER, 1);
-  curl_setopt($curlsession, CURLOPT_SSL_VERIFYHOST, 0);
-  curl_setopt($curlsession, CURLOPT_SSL_VERIFYPEER, FALSE);
-  if ($use_timeout) {
-    curl_setopt($curlsession, CURLOPT_TIMEOUT, $this->timeout);
-  }
-  $result = curl_exec($curlsession);
+    
+  $options = array(
+    'method' => 'POST',
+    'data' => $fields_string,
+    'headers' => array('Content-Type' => 'application/x-www-form-urlencoded'),
+  );
+  
+  $result = drupal_http_request($url, $options);
 
   if ($result) {
     try {
-      $m = drupal_json_decode($result);
+      $m = drupal_json_decode($result->data);
     } catch (Exception $e) {
       watchdog("AYAH::do_call() - Exception when calling drupal_json_decode: " . $e->getMessage());
       $m = NULL;
@@ -266,6 +263,6 @@ function _ayah_do_call($url, $fields, $use_timeout = FALSE) {
   else {
     $m = NULL;
   }
-  curl_close($curlsession);
+  
   return $m;
 }

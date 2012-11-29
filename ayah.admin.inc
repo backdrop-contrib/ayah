@@ -118,8 +118,6 @@ function ayah_admin_settings_validate($form, $form_state) {
   if (!preg_match('/^[a-z0-9_]*$/', $form_id)) {
     form_set_error('ayah_form_id_overview][ayah_new_ayah_form][form_id', t('Illegal form_id'));
   }
-  // TODO
-  // CHECK FOR CURL.
 }
 
 /**
@@ -163,7 +161,7 @@ function ayah_game_admin($ayah_form_id = NULL, $op = NULL) {
 /**
  * Confirm dialog for deleting a form.
  */
-function ayah_game_formdelete_confirm(&$form_state, &$ayah_form_id, $delete) {
+function ayah_game_formdelete_confirm($form, &$form_state, $ayah_form_id, $delete) {
   $form = array();
   $form['ayah_game_form_id'] = array(
     '#type' => 'value',
@@ -173,11 +171,15 @@ function ayah_game_formdelete_confirm(&$form_state, &$ayah_form_id, $delete) {
     '#type' => 'value',
     '#value' => $delete,
   );
-  if ($delete) {
-    $message = t('Are you sure you want to delete the AYAH game for form_id %form_id?', array('%form_id' => $ayah_form_id));
-    $yes = t('Delete');
-  }
-  return confirm_form($form, $message, 'admin/user/ayah', '', $yes);
+
+  return confirm_form(
+    $form,
+    t('Are you sure you want to delete the AYAH game for form_id %form_id?', array('%form_id' => $ayah_form_id)), 
+    'admin/user/ayah',
+    t('This action can not be undone.'),
+    t('Delete'),
+    t('Cancel')
+  );
 }
 
 /**
@@ -191,5 +193,5 @@ function ayah_game_formdelete_confirm_submit($form, &$form_state) {
     ayah_set_form_id_setting($ayah_game_form_id, 0, TRUE);
     drupal_set_message(t('Deleted AYAH game for form %form_id.', array('%form_id' => $ayah_game_form_id)));
   }
-  $form_state['redirect'] = 'admin/user/ayah';
+  $form_state['redirect'] = 'admin/config/people/ayah';
 }

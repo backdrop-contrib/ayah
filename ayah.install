@@ -60,9 +60,6 @@ function ayah_install() {
     drupal_set_message(st('Note that the AYAH module disables <a href="!performance_admin">page caching</a> of pages that include a AYAH game.',
       array('!performance_admin' => url('admin/settings/performance'))), 'warning');
   }
-  // TODO
-  // CHECK FOR CURL.
-  // ALSO CHECK FOR CURL WHEN WE SAVE THE CONFIGURATION.
 }
 
 /**
