@@ -243,13 +243,13 @@ function _ayah_do_call($url, $fields, $use_timeout = FALSE) {
     }
   }
   rtrim($fields_string, '&');
-    
+
   $options = array(
     'method' => 'POST',
     'data' => $fields_string,
     'headers' => array('Content-Type' => 'application/x-www-form-urlencoded'),
   );
-  
+
   $result = drupal_http_request($url, $options);
 
   if ($result) {
@@ -263,6 +263,6 @@ function _ayah_do_call($url, $fields, $use_timeout = FALSE) {
   else {
     $m = NULL;
   }
-  
+
   return $m;
 }

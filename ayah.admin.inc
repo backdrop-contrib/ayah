@@ -76,11 +76,11 @@ function ayah_admin_settings() {
     '#default_value' => variable_get('ayah_scoring_key', ''),
     '#description' => t('The Scoring Key associated with your domain on the <a href="http://portal.areyouahuman.com/" target="_blank">portal</a>'),
   );
-  
+
   $form = system_settings_form($form);
-  
+
   $form['#submit'][] = 'ayah_admin_settings_submit';
-  
+
   return $form;
 }
 
@@ -174,7 +174,7 @@ function ayah_game_formdelete_confirm($form, &$form_state, $ayah_form_id, $delet
 
   return confirm_form(
     $form,
-    t('Are you sure you want to delete the AYAH game for form_id %form_id?', array('%form_id' => $ayah_form_id)), 
+    t('Are you sure you want to delete the AYAH game for form_id %form_id?', array('%form_id' => $ayah_form_id)),
     'admin/user/ayah',
     t('This action can not be undone.'),
     t('Delete'),
