@@ -157,8 +157,7 @@ function _ayah_search_buttons($form) {
 
 
 /**
- * Helper function to insert a AYAH game element in a form before a given
- * form element.
+ * Helper function to insert a AYAH game element in a form.
  *
  * @param $form
  *   The form to add the AYAH element to.
@@ -174,7 +173,6 @@ function _ayah_search_buttons($form) {
  *       defined by 'key'. If 'key' is NULL and weight is not NULL: set the
  *       weight property of the AYAH element to this value.
  * @param $ayah_element
- * 
  *   The AYAH element to insert.
  */
 function _ayah_insert_game_element(&$form, $placement, $ayah_element) {
@@ -232,8 +230,7 @@ function _ayah_insert_game_element(&$form, $placement, $ayah_element) {
 
 
 /**
- * Internal:
- * Makes a call with drupal_http_request.
+ * Internal: Makes a call with drupal_http_request.
  */
 function _ayah_do_call($url, $fields, $use_timeout = FALSE) {
   $fields_string = "";

@@ -52,12 +52,12 @@ function ayah_install() {
   }
 
   // Be friendly to your users: what to do after install?
-  drupal_set_message(st('You can now <a href="@ayah_admin">configure the AYAH module</a> for your site.',
+  drupal_set_message($t('You can now <a href="@ayah_admin">configure the AYAH module</a> for your site.',
     array('@ayah_admin' => url('admin/config/people/ayah'))), 'status');
 
   // Explain to users that page caching may be disabled.
   if (variable_get('cache', 0) != 0) {
-    drupal_set_message(st('Note that the AYAH module disables <a href="@performance_admin">page caching</a> of pages that include a AYAH game.',
+    drupal_set_message($t('Note that the AYAH module disables <a href="@performance_admin">page caching</a> of pages that include a AYAH game.',
       array('@performance_admin' => url('admin/settings/performance'))), 'warning');
   }
 }
