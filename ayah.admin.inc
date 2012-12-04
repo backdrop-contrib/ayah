@@ -7,7 +7,7 @@
 
 
 /**
- * Form builder function for the general AYAH configuration
+ * Form builder function for the general AYAH configuration.
  */
 function ayah_admin_settings() {
   module_load_include('inc', 'ayah');
@@ -36,11 +36,11 @@ function ayah_admin_settings() {
       '#attributes' => (($ayah_point->add_game == 1) ? array('checked' => '1') : ''),
     );
     // Additional operations.
-      $form['ayah_form_protection']['ayah_form_id_overview']['ayah_ayah_forms'][$ayah_point->form_id]['operations'] = array(
-        '#markup' => implode(", ", array(
-          l(t('delete'), "admin/user/ayah/ayah_game/" . $ayah_point->form_id . "/delete"),
-        )),
-      );
+    $form['ayah_form_protection']['ayah_form_id_overview']['ayah_ayah_forms'][$ayah_point->form_id]['operations'] = array(
+      '#markup' => implode(", ", array(
+        l(t('delete'), "admin/user/ayah/ayah_game/" . $ayah_point->form_id . "/delete"),
+      )),
+    );
   }
   // Form items for new form_id.
   $form['ayah_form_protection']['ayah_form_id_overview']['ayah_new_ayah_form'] = array();
@@ -107,7 +107,7 @@ function theme_ayah_admin_settings_ayah_listforms($variables) {
   $rows[] = $row;
 
   $output = theme('table', array('header' => $header, 'rows' => $rows));
-  return $output ;
+  return $output;
 }
 
 /**
@@ -140,7 +140,7 @@ function ayah_admin_settings_submit($form, &$form_state) {
 }
 
 /**
- * Central handler for AYAH game administration (adding, disabling, deleting)
+ * Central handler for AYAH game administration (adding, disabling, deleting).
  */
 function ayah_game_admin($ayah_form_id = NULL, $op = NULL) {
   module_load_include('inc', 'ayah');
