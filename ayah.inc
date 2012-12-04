@@ -8,11 +8,11 @@
 /**
  * Helper function for adding/updating a AYAH form.
  *
- * @param $form_id
+ * @param string $form_id
  *   The form ID to configure.
- * @param $add_game
+ * @param int $add_game
  *   1 add | 0 don't add the game to the form.
- * @param $delete_form
+ * @param bool $delete_form
  *   It deletes the form from the list of forms if true.
  *
  * @return null
@@ -86,7 +86,7 @@ function _ayah_get_ayah_placement($form_id, $form) {
       $placement_map['comment_form'] = array(
         'path' => array(),
         'key' => NULL,
-        'weight' => 18.9
+        'weight' => 18.9,
       );
       // Additional note: the node forms also have the posibility to only
       // show a 'Preview' button. However, the 'Submit' button is always
