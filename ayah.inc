@@ -41,7 +41,6 @@ function ayah_set_form_id_setting($form_id, $add_game, $delete_form = FALSE) {
  *
  * @return NULL
  *   If no setting is known or a ayah_forms object with fields 'add_game'.
- *
  */
 function ayah_get_form_id_setting($form_id) {
   $result = db_query("SELECT add_game FROM {ayah_forms} WHERE form_id = :form_id", array(':form_id' => $form_id));
@@ -133,7 +132,6 @@ function _ayah_get_ayah_placement($form_id, $form) {
  *   A path is an array of keys leading to the button, the last
  *   item in the path is the weight of the button element
  *   (or NULL if undefined).
- *
  */
 function _ayah_search_buttons($form) {
   $buttons = array();
@@ -176,8 +174,8 @@ function _ayah_search_buttons($form) {
  *       defined by 'key'. If 'key' is NULL and weight is not NULL: set the
  *       weight property of the AYAH element to this value.
  * @param $ayah_element
+ * 
  *   The AYAH element to insert.
- *
  */
 function _ayah_insert_game_element(&$form, $placement, $ayah_element) {
   // Get path, target and target weight or use defaults if not available.
@@ -263,7 +261,7 @@ function _ayah_do_call($url, $fields, $use_timeout = FALSE) {
     try {
       $m = drupal_json_decode($result->data);
     } catch (Exception $e) {
-      watchdog("AYAH::do_call() - Exception when calling drupal_json_decode: " . $e->getMessage());
+      watchdog('ayah', '_ayah_do_call() - Exception when calling drupal_json_decode.');
       $m = NULL;
     }
   }
