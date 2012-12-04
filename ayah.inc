@@ -17,15 +17,18 @@
  *
  * @return null
  *   Nothing returned.
- *
  */
 function ayah_set_form_id_setting($form_id, $add_game, $delete_form = FALSE) {
   if ($delete_form) {
     db_query("DELETE FROM {ayah_forms} WHERE form_id = :form_id", array('form_id' => $form_id));
   }
-  else{
+  else {
     $sql = "INSERT INTO {ayah_forms} (form_id, add_game) VALUES (:form_id, :add_game) ON DUPLICATE KEY UPDATE add_game= :add_game;";
-    db_query($sql, array(':form_id' => $form_id, ':add_game' => $add_game, ':add_game' => $add_game));
+    db_query($sql, array(
+      ':form_id' => $form_id,
+      ':add_game' => $add_game,
+      ':add_game' => $add_game,
+    ));
   }
 }
 
