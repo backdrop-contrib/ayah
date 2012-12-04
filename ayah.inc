@@ -36,7 +36,7 @@ function ayah_set_form_id_setting($form_id, $add_game, $delete_form = FALSE) {
 /**
  * Get the AYAH setting for a given form_id.
  *
- * @param $form_id
+ * @param string $form_id
  *   The form_id to query for
  *
  * @return NULL
@@ -55,9 +55,9 @@ function ayah_get_form_id_setting($form_id) {
 /**
  * Helper function to get placement information for a given form_id.
  *
- * @param $form_id
+ * @param string $form_id
  *   The form_id to get the placement information for.
- * @param $form
+ * @param array $form
  *   If a form corresponding to the given form_id, if there
  *   is no placement info for the given form_id, this form is examined to
  *   guess the placement.
@@ -124,7 +124,7 @@ function _ayah_get_ayah_placement($form_id, $form) {
 /**
  * Helper function for searching the buttons in a form.
  *
- * @param $form
+ * @param array $form
  *   The form to search button elements in.
  *
  * @return array
@@ -159,9 +159,9 @@ function _ayah_search_buttons($form) {
 /**
  * Helper function to insert a AYAH game element in a form.
  *
- * @param $form
+ * @param array $form
  *   The form to add the AYAH element to.
- * @param $placement
+ * @param array $placement
  *   Information where the AYAH element should be inserted.
  *   $placement should be an associative array with fields:
  *     - 'path': path (array of path items) of the container in the form where
@@ -172,7 +172,7 @@ function _ayah_search_buttons($form) {
  *     - 'weight': if 'key' is not NULL: should be the weight of the element
  *       defined by 'key'. If 'key' is NULL and weight is not NULL: set the
  *       weight property of the AYAH element to this value.
- * @param $ayah_element
+ * @param array $ayah_element
  *   The AYAH element to insert.
  */
 function _ayah_insert_game_element(&$form, $placement, $ayah_element) {
