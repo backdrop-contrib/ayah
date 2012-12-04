@@ -84,7 +84,11 @@ function _ayah_get_ayah_placement($form_id, $form) {
       // and 'Preview' button, which is tricky for automatic placement
       // detection. Luckily, Drupal core sets their weight (19 and 20),
       // so we just have to specify a slightly smaller weight.
-      $placement_map['comment_form'] = array('path' => array(), 'key' => NULL, 'weight' => 18.9);
+      $placement_map['comment_form'] = array(
+        'path' => array(),
+        'key' => NULL,
+        'weight' => 18.9
+      );
       // Additional note: the node forms also have the posibility to only
       // show a 'Preview' button. However, the 'Submit' button is always
       // present, but is just not rendered ('#access' = FALSE) in those cases.
