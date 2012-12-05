@@ -21,7 +21,6 @@ function ayah_menu() {
     'page callback' => 'drupal_get_form',
     'page arguments' => array('ayah_admin_settings'),
     'access arguments' => array('administer AYAH settings'),
-    'type' => MENU_NORMAL_ITEM,
   );
   $items['admin/user/ayah/ayah_game'] = array(
     'title' => 'AYAH game administration',
