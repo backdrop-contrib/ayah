@@ -24,7 +24,6 @@ function ayah_admin_settings() {
     '#tree' => TRUE,
   );
   $form['ayah_form_protection']['ayah_form_id_overview']['ayah_ayah_forms'] = array();
-  // $result = db_query("SELECT * FROM {ayah_forms} ORDER BY form_id");
   $result = variable_get('ayah_forms', '');
   foreach ($result as $ayah_point) {
     $form['ayah_form_protection']['ayah_form_id_overview']['ayah_ayah_forms'][$ayah_point] = array();
@@ -32,10 +31,6 @@ function ayah_admin_settings() {
       '#markup' => $ayah_point,
     );
 
-    /*$form['ayah_form_protection']['ayah_form_id_overview']['ayah_ayah_forms'][$ayah_point->form_id]['add_game'] = array(
-      '#type' => 'checkbox',
-      '#attributes' => (($ayah_point->add_game == 1) ? array('checked' => '1') : ''),
-    );*/
     // Additional operations.
     $form['ayah_form_protection']['ayah_form_id_overview']['ayah_ayah_forms'][$ayah_point]['operations'] = array(
       '#markup' => implode(", ", array(
@@ -60,9 +55,7 @@ function ayah_admin_settings() {
     '#default_value' => variable_get('ayah_allow_on_admin_pages', FALSE),
     '#description' => t("This option makes it possible to add AYAH games to forms on administrative pages. AYAH games are disabled by default on administrative pages (which shouldn't be accessible to untrusted users normally) to avoid the related overhead. In some situations, e.g. in the case of demo sites, it can be usefull to allow AYAH games on administrative pages."),
   );
-  // Button for flushing the AYAH placement cache.
-  // TBD
-  //
+  
   // Publisher key.
   $form['ayah_publisher_key'] = array(
     '#type' => 'textfield',
