@@ -24,21 +24,22 @@ function ayah_admin_settings() {
     '#tree' => TRUE,
   );
   $form['ayah_form_protection']['ayah_form_id_overview']['ayah_ayah_forms'] = array();
-  $result = db_query("SELECT * FROM {ayah_forms} ORDER BY form_id");
+  // $result = db_query("SELECT * FROM {ayah_forms} ORDER BY form_id");
+  $result = variable_get('ayah_forms', '');
   foreach ($result as $ayah_point) {
-    $form['ayah_form_protection']['ayah_form_id_overview']['ayah_ayah_forms'][$ayah_point->form_id] = array();
-    $form['ayah_form_protection']['ayah_form_id_overview']['ayah_ayah_forms'][$ayah_point->form_id]['form_id'] = array(
-      '#markup' => $ayah_point->form_id,
+    $form['ayah_form_protection']['ayah_form_id_overview']['ayah_ayah_forms'][$ayah_point] = array();
+    $form['ayah_form_protection']['ayah_form_id_overview']['ayah_ayah_forms'][$ayah_point]['form_id'] = array(
+      '#markup' => $ayah_point,
     );
 
-    $form['ayah_form_protection']['ayah_form_id_overview']['ayah_ayah_forms'][$ayah_point->form_id]['add_game'] = array(
+    /*$form['ayah_form_protection']['ayah_form_id_overview']['ayah_ayah_forms'][$ayah_point->form_id]['add_game'] = array(
       '#type' => 'checkbox',
       '#attributes' => (($ayah_point->add_game == 1) ? array('checked' => '1') : ''),
-    );
+    );*/
     // Additional operations.
-    $form['ayah_form_protection']['ayah_form_id_overview']['ayah_ayah_forms'][$ayah_point->form_id]['operations'] = array(
+    $form['ayah_form_protection']['ayah_form_id_overview']['ayah_ayah_forms'][$ayah_point]['operations'] = array(
       '#markup' => implode(", ", array(
-        l(t('delete'), "admin/user/ayah/ayah_game/" . $ayah_point->form_id . "/delete"),
+        l(t('delete'), "admin/user/ayah/ayah_game/" . $ayah_point . "/delete"),
       )),
     );
   }
@@ -89,20 +90,20 @@ function ayah_admin_settings() {
  */
 function theme_ayah_admin_settings_ayah_listforms($variables) {
   $form = $variables['form'];
-  $header = array('form_id', t('Selected'), t('Operations'));
+  $header = array('form_id', t('Operations'));
   $rows = array();
   // Existing ayah forms.
   foreach (element_children($form['ayah_ayah_forms']) as $key) {
     $row = array();
     $row[] = drupal_render($form['ayah_ayah_forms'][$key]['form_id']);
-    $row[] = drupal_render($form['ayah_ayah_forms'][$key]['add_game']);
+    //$row[] = drupal_render($form['ayah_ayah_forms'][$key]['add_game']);
     $row[] = drupal_render($form['ayah_ayah_forms'][$key]['operations']);
     $rows[] = $row;
   }
   // For new ayah form.
   $row = array();
   $row[] = drupal_render($form['ayah_new_ayah_form']['form_id']);
-  $row[] = drupal_render($form['ayah_new_ayah_form']['new_add_game']);
+  //$row[] = drupal_render($form['ayah_new_ayah_form']['new_add_game']);
   $row[] = '';
   $rows[] = $row;
 

@@ -47,6 +47,12 @@ function ayah_install() {
     'forum_node_form', 'user_login', 'user_login_block', 'user_pass',
     'user_register_form',
   );
+  
+  // Store form_ids in variables table.
+  variable_set('ayah_forms', $form_ids);
+  
+  $test = variable_get('ayah_forms', '');
+  
   foreach ($form_ids as $form_id) {
     db_query("INSERT INTO {ayah_forms} (form_id) VALUES (:form_id)", array(':form_id' => $form_id));
   }
