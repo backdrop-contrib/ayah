@@ -16,7 +16,7 @@ function ayah_admin_settings() {
   $form['ayah_form_protection'] = array(
     '#type' => 'fieldset',
     '#title' => t('Form protection'),
-    '#description' => t("Select which one of the listed forms (identified by their <em>form_id</em>'s) you want to add the game to. You can easily add arbitrary forms using the textfield at the bottom of the table."),
+    '#description' => t("Enter the form id(s) you want the AYAH game to appear on.  Some common id's include <em>comment_node_page_form, contact_personal_form, contact_site_form, forum_node_form, user_login, user_login_block, user_pass, user_register_form.</em>"),
   );
   // List known form_ids.
   $form['ayah_form_protection']['ayah_form_id_overview'] = array(

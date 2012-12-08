@@ -37,7 +37,7 @@ function ayah_menu() {
 /**
  * Implements hook_perm().
  */
-function ayah_perm() {
+function ayah_permission() {
   return array(
     'administer AYAH settings' => array(
       'title' => t('Administer AYAH settings'),
@@ -246,13 +246,7 @@ function ayah_set_form_id_setting($form_id, $add_game, $delete_form = FALSE) {
     variable_set('ayah_forms', $ayah_forms);
   }
   else {
-    /*$sql = "INSERT INTO {ayah_forms} (form_id, add_game) VALUES (:form_id, :add_game) ON DUPLICATE KEY UPDATE add_game= :add_game;";
-    db_query($sql, array(
-      ':form_id' => $form_id,
-      ':add_game' => $add_game,
-      ':add_game' => $add_game,
-    ));*/
-    $ayah_forms = array();
+    
     $ayah_forms = variable_get('ayah_forms', '');
     
     $ayah_forms[] = $form_id;
@@ -272,7 +266,6 @@ function ayah_set_form_id_setting($form_id, $add_game, $delete_form = FALSE) {
  *   If no setting is known or a ayah_forms object with fields 'add_game'.
  */
 function ayah_get_form_id_setting($form_id) {
-  //$result = db_query("SELECT add_game FROM {ayah_forms} WHERE form_id = :form_id", array(':form_id' => $form_id));
   $ayah_forms = variable_get('ayah_forms', '');
   
   foreach ($ayah_forms as $key => $value) {
