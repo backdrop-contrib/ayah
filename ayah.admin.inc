@@ -89,14 +89,12 @@ function theme_ayah_admin_settings_ayah_listforms($variables) {
   foreach (element_children($form['ayah_ayah_forms']) as $key) {
     $row = array();
     $row[] = drupal_render($form['ayah_ayah_forms'][$key]['form_id']);
-    //$row[] = drupal_render($form['ayah_ayah_forms'][$key]['add_game']);
     $row[] = drupal_render($form['ayah_ayah_forms'][$key]['operations']);
     $rows[] = $row;
   }
   // For new ayah form.
   $row = array();
   $row[] = drupal_render($form['ayah_new_ayah_form']['form_id']);
-  //$row[] = drupal_render($form['ayah_new_ayah_form']['new_add_game']);
   $row[] = '';
   $rows[] = $row;
 
