@@ -63,6 +63,15 @@ function ayah_admin_settings() {
     '#default_value' => variable_get('ayah_publisher_key', ''),
     '#description' => t('The Publisher Key associated with your domain on the <a href="http://portal.areyouahuman.com/" target="_blank">portal</a>'),
   );
+  
+  // Field for AYAH form id finder.
+  $form['ayah_form_protection']['ayah_form_finder'] = array(
+    '#type' => 'checkbox',
+    '#title' => t('Display form id of current form'),
+    '#default_value' => variable_get('ayah_form_finder', FALSE),
+    '#description' => t("This option displays the form id with a status message making it easier to find form ids."),
+  );
+  
   // Scoring key.
   $form['ayah_scoring_key'] = array(
     '#type' => 'textfield',
