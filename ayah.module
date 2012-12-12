@@ -203,19 +203,6 @@ function ayah_validate($element, &$form_state) {
   if (!$is_a_human) {
     // Wrong answer, set form error.
     form_set_error('ayah_response', t("You did not pass the game."));
-    // If the AYAH game was on a login form: stop validating, quit the current
-    // request and forward to the current page (like a reload) to prevent
-    // logging in. We do this because the log in procedure, which happens after
-    // ayah_validate(), does not check error conditions of extra form elements
-    // like the the AYAH game.
-    if ($form_id == 'user_login' || $form_id == 'user_login_block') {
-      if (url_is_external($_GET['q'])) {
-        drupal_goto();
-      }
-      else {
-        drupal_goto($_GET['q']);
-      }
-    }
   }
 }
 
@@ -265,6 +252,9 @@ function ayah_set_form_id_setting($form_id, $add_game, $delete_form = FALSE) {
  *   If no setting is known or a ayah_forms object with fields 'add_game'.
  */
 function ayah_get_form_id_setting($form_id) {
+  
+  $result = "";
+  
   $ayah_forms = variable_get('ayah_forms', '');
   
   foreach ($ayah_forms as $key => $value) {
