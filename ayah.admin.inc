@@ -25,18 +25,24 @@ function ayah_admin_settings() {
   );
   $form['ayah_form_protection']['ayah_form_id_overview']['ayah_ayah_forms'] = array();
   $result = variable_get('ayah_forms', '');
-  foreach ($result as $ayah_point) {
-    $form['ayah_form_protection']['ayah_form_id_overview']['ayah_ayah_forms'][$ayah_point] = array();
-    $form['ayah_form_protection']['ayah_form_id_overview']['ayah_ayah_forms'][$ayah_point]['form_id'] = array(
-      '#markup' => $ayah_point,
-    );
+  
+  if (!empty($result)) {
+    foreach ($result as $ayah_point) {
+      $form['ayah_form_protection']['ayah_form_id_overview']['ayah_ayah_forms'][$ayah_point] = array();
+      $form['ayah_form_protection']['ayah_form_id_overview']['ayah_ayah_forms'][$ayah_point]['form_id'] = array(
+        '#markup' => $ayah_point,
+      );
 
-    // Additional operations.
-    $form['ayah_form_protection']['ayah_form_id_overview']['ayah_ayah_forms'][$ayah_point]['operations'] = array(
-      '#markup' => implode(", ", array(
-        l(t('delete'), "admin/user/ayah/ayah_game/" . $ayah_point . "/delete"),
-      )),
-    );
+      // Additional operations.
+      $form['ayah_form_protection']['ayah_form_id_overview']['ayah_ayah_forms'][$ayah_point]['operations'] = array(
+        '#markup' => implode(", ", array(
+          l(t('delete'), "admin/user/ayah/ayah_game/" . $ayah_point . "/delete"),
+        )),
+      );
+    }
+  }
+  else {
+    drupal_set_message(t('No forms are configured.  Please add some in the AYAH configuration.'), 'warning');
   }
   // Form items for new form_id.
   $form['ayah_form_protection']['ayah_form_id_overview']['ayah_new_ayah_form'] = array();
@@ -56,20 +62,20 @@ function ayah_admin_settings() {
     '#description' => t("This option makes it possible to add AYAH games to forms on administrative pages. AYAH games are disabled by default on administrative pages (which shouldn't be accessible to untrusted users normally) to avoid the related overhead. In some situations, e.g. in the case of demo sites, it can be usefull to allow AYAH games on administrative pages."),
   );
   
-  // Publisher key.
-  $form['ayah_publisher_key'] = array(
-    '#type' => 'textfield',
-    '#title' => t('Publisher key'),
-    '#default_value' => variable_get('ayah_publisher_key', ''),
-    '#description' => t('The Publisher Key associated with your domain on the <a href="http://portal.areyouahuman.com/" target="_blank">portal</a>'),
-  );
-  
   // Field for AYAH form id finder.
   $form['ayah_form_protection']['ayah_form_finder'] = array(
     '#type' => 'checkbox',
     '#title' => t('Display form id of current form'),
     '#default_value' => variable_get('ayah_form_finder', FALSE),
     '#description' => t("This option displays the form id with a status message making it easier to find form ids."),
+  );
+  
+  // Publisher key.
+  $form['ayah_publisher_key'] = array(
+    '#type' => 'textfield',
+    '#title' => t('Publisher key'),
+    '#default_value' => variable_get('ayah_publisher_key', ''),
+    '#description' => t('The Publisher Key associated with your domain on the <a href="http://portal.areyouahuman.com/" target="_blank">portal</a>'),
   );
   
   // Scoring key.

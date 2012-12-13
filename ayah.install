@@ -32,6 +32,9 @@ function ayah_install() {
  * Implements hook_uninstall().
  */
 function ayah_uninstall() {
-  db_query("DELETE FROM {variable} WHERE name LIKE 'ayah_%'");
+  db_delete('variable')
+    ->condition('name', db_like('ayah_') . '%', 'LIKE')
+    ->execute();
+  
   cache_clear_all('variables', 'cache');
 }
