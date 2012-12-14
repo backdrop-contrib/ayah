@@ -233,13 +233,13 @@ function ayah_set_form_id_setting($form_id, $add_game, $delete_form = FALSE) {
   else {
 
     $ayah_forms = variable_get('ayah_forms', '');
-    
+
     if (empty($ayah_forms)) {
       $ayah_forms = array();
     }
-    
+
     $ayah_forms[$form_id] = TRUE;
-    
+
     variable_set('ayah_forms', $ayah_forms);
   }
 }
@@ -282,7 +282,7 @@ function _ayah_get_ayah_placement($form_id, $form) {
     // The the automatic button detection should be sufficient for node forms.
     //
     // TODO: also make the placement 'overridable' from the admin UI?
-    }
+  }
 
   // Query the placement map.
   if (isset($placement_map['form_id'])) {
