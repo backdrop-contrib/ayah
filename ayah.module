@@ -136,11 +136,10 @@ function ayah_form_alter(&$form, $form_state, $form_id) {
     drupal_set_message('Form ID: ' . $form_id);
   }
   if (arg(0) != 'admin' || variable_get('ayah_allow_on_admin_pages', FALSE)) {
-    module_load_include('inc', 'ayah');
     if (!user_access('skip AYAH')) {
       // See if we need to add the game for this form_id.
-      $ayah_form = ayah_get_form_id_setting($form_id);
-      if (isset($ayah_form)) {
+      $ayah_form = variable_get('ayah_forms', '');
+      if (isset($ayah_form[$form_id])) {
         // Build AYAH form element.
         $ayah_element = array(
           '#type' => 'ayah',
@@ -218,16 +217,13 @@ function ayah_validate($element, &$form_state) {
  *   1 add | 0 don't add the game to the form.
  * @param bool $delete_form
  *   It deletes the form from the list of forms if true.
- *
- * @return null
- *   Nothing returned.
  */
 function ayah_set_form_id_setting($form_id, $add_game, $delete_form = FALSE) {
   if ($delete_form) {
     $ayah_forms = variable_get('ayah_forms', '');
 
     foreach ($ayah_forms as $key => $value) {
-      if ($value === $form_id) {
+      if ($key === $form_id) {
         unset($ayah_forms[$key]);
       }
     }
@@ -237,40 +233,15 @@ function ayah_set_form_id_setting($form_id, $add_game, $delete_form = FALSE) {
   else {
 
     $ayah_forms = variable_get('ayah_forms', '');
-
-    $ayah_forms[] = $form_id;
-
+    
+    if (empty($ayah_forms)) {
+      $ayah_forms = array();
+    }
+    
+    $ayah_forms[$form_id] = TRUE;
+    
     variable_set('ayah_forms', $ayah_forms);
   }
-}
-
-
-/**
- * Get the AYAH setting for a given form_id.
- *
- * @param string $form_id
- *   The form_id to query for
- *
- * @return NULL
- *   If no setting is known.
- */
-function ayah_get_form_id_setting($form_id) {
-
-  $result = "";
-
-  $ayah_forms = variable_get('ayah_forms', '');
-
-  foreach ($ayah_forms as $key => $value) {
-    if ($value === $form_id) {
-      $result = $value;
-    }
-  }
-
-  if (!$result) {
-    return NULL;
-  }
-  $ayah_form = $result;
-  return $ayah_form;
 }
 
 
@@ -288,36 +259,31 @@ function ayah_get_form_id_setting($form_id) {
  *   Placement info array.
  */
 function _ayah_get_ayah_placement($form_id, $form) {
-  // Get AYAH placement map from cache. Two levels of cache:
-  // static variable in this function and storage in the variables table.
-  static $placement_map = NULL;
-  // Try first level cache.
-  if ($placement_map === NULL) {
-    // If first level cache missed: try second level cache.
-    $placement_map = variable_get('ayah_placement_map_cache', NULL);
+  // Get AYAH placement map from cache.
+  $placement_map = variable_get('ayah_placement_map_cache', NULL);
 
-    if ($placement_map === NULL) {
-      // If second level cache missed: start from a fresh placement map.
-      $placement_map = array();
-      // Prefill with some hard coded default entries.
-      //
-      // The comment form can have a 'Preview' button, or both a 'Submit'
-      // and 'Preview' button, which is tricky for automatic placement
-      // detection. Luckily, Drupal core sets their weight (19 and 20),
-      // so we just have to specify a slightly smaller weight.
-      $placement_map['comment_form'] = array(
-        'path' => array(),
-        'key' => NULL,
-        'weight' => 18.9,
-      );
-      // Additional note: the node forms also have the posibility to only
-      // show a 'Preview' button. However, the 'Submit' button is always
-      // present, but is just not rendered ('#access' = FALSE) in those cases.
-      // The the automatic button detection should be sufficient for node forms.
-      //
-      // TODO: also make the placement 'overridable' from the admin UI?
+  if ($placement_map === NULL) {
+    // If cache missed: start from a fresh placement map.
+    $placement_map = array();
+    // Prefill with some hard coded default entries.
+    //
+    // The comment form can have a 'Preview' button, or both a 'Submit'
+    // and 'Preview' button, which is tricky for automatic placement
+    // detection. Luckily, Drupal core sets their weight (19 and 20),
+    // so we just have to specify a slightly smaller weight.
+    $placement_map['comment_form'] = array(
+      'path' => array(),
+      'key' => NULL,
+      'weight' => 18.9,
+    );
+    // Additional note: the node forms also have the posibility to only
+    // show a 'Preview' button. However, the 'Submit' button is always
+    // present, but is just not rendered ('#access' = FALSE) in those cases.
+    // The the automatic button detection should be sufficient for node forms.
+    //
+    // TODO: also make the placement 'overridable' from the admin UI?
     }
-  }
+
   // Query the placement map.
   if (isset($placement_map['form_id'])) {
     $placement = $placement_map[$form_id];

@@ -27,7 +27,7 @@ function ayah_admin_settings() {
   $result = variable_get('ayah_forms', '');
 
   if (!empty($result)) {
-    foreach ($result as $ayah_point) {
+    foreach ($result as $ayah_point => $value) {
       $form['ayah_form_protection']['ayah_form_id_overview']['ayah_ayah_forms'][$ayah_point] = array();
       $form['ayah_form_protection']['ayah_form_id_overview']['ayah_ayah_forms'][$ayah_point]['form_id'] = array(
         '#markup' => $ayah_point,
