@@ -184,7 +184,6 @@ function ayah_validate($element, &$form_state) {
   $ayah_info = $form_state['ayah_info'];
   $form_id = $ayah_info['this_form_id'];
 
-  module_load_include('inc', 'ayah');
   $session_secret = NULL;
   if (isset($_REQUEST['session_secret'])) {
     $session_secret = $_REQUEST["session_secret"];
