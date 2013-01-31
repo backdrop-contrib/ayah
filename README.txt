@@ -31,8 +31,11 @@ the desired forms.
 Requirements
 ------------
 
-There are no extra module requirements or AYAH, however, an account
+There are no extra module requirements for AYAH, however, an account
 from Are You a Human is required.
 http://areyouahuman.com
 
- 
+Changelog
+---------
+
+01/31/13 - Removed beta tag.  Fixed spelling mistake in README.
