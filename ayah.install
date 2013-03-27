@@ -38,3 +38,10 @@ function ayah_uninstall() {
 
   cache_clear_all('variables', 'cache');
 }
+
+/**
+ * Clears ayah placement cache to ensure cache is rebuilt.
+ */
+function ayah_update_7100() {
+  variable_set('ayah_placement_map_cache', NULL);
+}
