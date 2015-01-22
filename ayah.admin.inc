@@ -42,7 +42,7 @@ function ayah_admin_settings() {
     }
   }
   else {
-    drupal_set_message(t('No forms are configured.  Please add some in the AYAH configuration.'), 'warning');
+    backdrop_set_message(t('No forms are configured.  Please add some in the AYAH configuration.'), 'warning');
   }
   // Form items for new form_id.
   $form['ayah_form_protection']['ayah_form_id_overview']['ayah_new_ayah_form'] = array();
@@ -103,13 +103,13 @@ function theme_ayah_admin_settings_ayah_listforms($variables) {
   // Existing ayah forms.
   foreach (element_children($form['ayah_ayah_forms']) as $key) {
     $row = array();
-    $row[] = drupal_render($form['ayah_ayah_forms'][$key]['form_id']);
-    $row[] = drupal_render($form['ayah_ayah_forms'][$key]['operations']);
+    $row[] = backdrop_render($form['ayah_ayah_forms'][$key]['form_id']);
+    $row[] = backdrop_render($form['ayah_ayah_forms'][$key]['operations']);
     $rows[] = $row;
   }
   // For new ayah form.
   $row = array();
-  $row[] = drupal_render($form['ayah_new_ayah_form']['form_id']);
+  $row[] = backdrop_render($form['ayah_new_ayah_form']['form_id']);
   $row[] = '';
   $rows[] = $row;
 
@@ -142,7 +142,7 @@ function ayah_admin_settings_submit($form, &$form_state) {
   if (!empty($ayah_new_form_id)) {
     $ayah_type = $form_state['values']['ayah_form_id_overview']['ayah_new_ayah_form']['new_add_game'];
     ayah_set_form_id_setting($ayah_new_form_id, $ayah_type);
-    drupal_set_message(t('Added ayah form.'), 'status');
+    backdrop_set_message(t('Added ayah form.'), 'status');
   }
 }
 
@@ -156,13 +156,13 @@ function ayah_game_admin($ayah_form_id = NULL, $op = NULL) {
   if ($ayah_form_id) {
     switch ($op) {
       case 'delete':
-        return drupal_get_form('ayah_game_formdelete_confirm', $ayah_form_id, TRUE);
+        return backdrop_get_form('ayah_game_formdelete_confirm', $ayah_form_id, TRUE);
     }
     // Return edit form for AYAH settings.
-    return drupal_get_form('ayah_admin_settings', $ayah_form_id);
+    return backdrop_get_form('ayah_admin_settings', $ayah_form_id);
   }
   // Return add form for AYAH settings.
-  return drupal_get_form('ayah_admin_settings');
+  return backdrop_get_form('ayah_admin_settings');
 }
 
 /**
@@ -198,7 +198,7 @@ function ayah_game_formdelete_confirm_submit($form, &$form_state) {
   $delete = $form_state['values']['ayah_game_delete'];
   if ($delete) {
     ayah_set_form_id_setting($ayah_game_form_id, 0, TRUE);
-    drupal_set_message(t('Deleted AYAH game for form %form_id.', array('%form_id' => $ayah_game_form_id)));
+    backdrop_set_message(t('Deleted AYAH game for form %form_id.', array('%form_id' => $ayah_game_form_id)));
   }
   $form_state['redirect'] = 'admin/config/people/ayah';
 }

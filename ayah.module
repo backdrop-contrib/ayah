@@ -18,7 +18,7 @@ function ayah_menu() {
     'title' => 'AYAH',
     'description' => 'Administer how and where AYAH games are used.',
     'file' => 'ayah.admin.inc',
-    'page callback' => 'drupal_get_form',
+    'page callback' => 'backdrop_get_form',
     'page arguments' => array('ayah_admin_settings'),
     'access arguments' => array('administer AYAH settings'),
   );
@@ -122,7 +122,7 @@ function theme_ayah($variables) {
   $ayah_web_service_host = "ws.areyouahuman.com";
   $ayah_publisher_key = variable_get('ayah_publisher_key', '');
   $url = 'https://' . $ayah_web_service_host . "/ws/script/" . urlencode($ayah_publisher_key);
-  drupal_add_js($url, 'external');
+  backdrop_add_js($url, 'external');
   return "<div id='AYAH'></div>";
 }
 
@@ -133,7 +133,7 @@ function theme_ayah($variables) {
  */
 function ayah_form_alter(&$form, $form_state, $form_id) {
   if (user_access('administer AYAH settings') && variable_get('ayah_form_finder')) {
-    drupal_set_message('Form ID: ' . $form_id);
+    backdrop_set_message('Form ID: ' . $form_id);
   }
   if (arg(0) != 'admin' || variable_get('ayah_allow_on_admin_pages', FALSE)) {
     if (!user_access('skip AYAH')) {
@@ -423,7 +423,7 @@ function _ayah_insert_game_element(&$form, $placement, $ayah_element) {
 
 
 /**
- * Internal: Makes a call with drupal_http_request.
+ * Internal: Makes a call with backdrop_http_request.
  */
 function _ayah_do_call($url, $fields, $use_timeout = FALSE) {
   $fields_string = "";
@@ -445,13 +445,13 @@ function _ayah_do_call($url, $fields, $use_timeout = FALSE) {
     'headers' => array('Content-Type' => 'application/x-www-form-urlencoded'),
   );
 
-  $result = drupal_http_request($url, $options);
+  $result = backdrop_http_request($url, $options);
 
   if ($result) {
     try {
-      $m = drupal_json_decode($result->data);
+      $m = backdrop_json_decode($result->data);
     } catch (Exception $e) {
-      watchdog('ayah', '_ayah_do_call() - Exception when calling drupal_json_decode.');
+      watchdog('ayah', '_ayah_do_call() - Exception when calling backdrop_json_decode.');
       $m = NULL;
     }
   }

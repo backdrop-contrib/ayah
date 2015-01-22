@@ -1,5 +1,5 @@
 name = AYAH
 description = Are You A Human is a dynamic, ever changing interactive experience that stops spammers in their tracks.
 package = AYAH
-core = 7.x
+backdrop = 1.x
 configure = admin/config/people/ayah
