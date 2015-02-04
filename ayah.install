@@ -15,7 +15,8 @@ function ayah_install() {
   $form_ids = array();
 
   // Store form_ids in variables table.
-  variable_set('ayah_forms', $form_ids);
+  $config = config('ayah.settings');
+  $config->set('forms', $form_ids);
 
   // Be friendly to your users: what to do after install?
   backdrop_set_message($t('You can now <a href="@ayah_admin">configure the AYAH module</a> for your site.',
@@ -26,6 +27,7 @@ function ayah_install() {
     backdrop_set_message($t('Note that the AYAH module disables <a href="@performance_admin">page caching</a> of pages that include a AYAH game.',
       array('@performance_admin' => url('admin/settings/performance'))), 'warning');
   }
+  $config->save();
 }
 
 /**
@@ -43,5 +45,7 @@ function ayah_uninstall() {
  * Clears ayah placement cache to ensure cache is rebuilt.
  */
 function ayah_update_7100() {
-  variable_set('ayah_placement_map_cache', NULL);
+  $config = config('ayah.settings');
+  $config->set('placement_map_cache', NULL);
+  $config->save();
 }

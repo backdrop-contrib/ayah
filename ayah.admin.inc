@@ -12,6 +12,8 @@
 function ayah_admin_settings() {
   module_load_include('inc', 'ayah');
 
+  $config = config('ayah.settings');
+
   // Configuration of which forms to protect, with what challenge.
   $form['ayah_form_protection'] = array(
     '#type' => 'fieldset',
@@ -24,7 +26,7 @@ function ayah_admin_settings() {
     '#tree' => TRUE,
   );
   $form['ayah_form_protection']['ayah_form_id_overview']['ayah_ayah_forms'] = array();
-  $result = variable_get('ayah_forms', '');
+  $result = $config->get('forms');
 
   if (!empty($result)) {
     foreach ($result as $ayah_point => $value) {
@@ -45,49 +47,53 @@ function ayah_admin_settings() {
     backdrop_set_message(t('No forms are configured.  Please add some in the AYAH configuration.'), 'warning');
   }
   // Form items for new form_id.
-  $form['ayah_form_protection']['ayah_form_id_overview']['ayah_new_ayah_form'] = array();
+  $form['ayah_form_protection']['ayah_form_id_overview']['new_ayah_form'] = array();
   // Textfield for form_id.
-  $form['ayah_form_protection']['ayah_form_id_overview']['ayah_new_ayah_form']['form_id'] = array(
+  $form['ayah_form_protection']['ayah_form_id_overview']['new_ayah_form']['form_id'] = array(
     '#type' => 'textfield',
     '#size' => 16,
   );
-  $form['ayah_form_protection']['ayah_form_id_overview']['ayah_new_ayah_form']['new_add_game'] = array(
+  $form['ayah_form_protection']['ayah_form_id_overview']['new_ayah_form']['new_add_game'] = array(
     '#type' => 'checkbox',
   );
   // Field for the AYAH game on admin pages.
-  $form['ayah_form_protection']['ayah_allow_on_admin_pages'] = array(
+  $form['ayah_form_protection']['allow_on_admin_pages'] = array(
     '#type' => 'checkbox',
     '#title' => t('Allow AYAH games on administrative pages'),
-    '#default_value' => variable_get('ayah_allow_on_admin_pages', FALSE),
+    '#default_value' => $config->get('allow_on_admin_pages'),
     '#description' => t("This option makes it possible to add AYAH games to forms on administrative pages. AYAH games are disabled by default on administrative pages (which shouldn't be accessible to untrusted users normally) to avoid the related overhead. In some situations, e.g. in the case of demo sites, it can be usefull to allow AYAH games on administrative pages."),
   );
 
   // Field for AYAH form id finder.
-  $form['ayah_form_protection']['ayah_form_finder'] = array(
+  $form['ayah_form_protection']['form_finder'] = array(
     '#type' => 'checkbox',
     '#title' => t('Display form id of current form'),
-    '#default_value' => variable_get('ayah_form_finder', FALSE),
+    '#default_value' => $config->get('form_finder'),
     '#description' => t("This option displays the form id with a status message making it easier to find form ids."),
   );
 
   // Publisher key.
-  $form['ayah_publisher_key'] = array(
+  $form['publisher_key'] = array(
     '#type' => 'textfield',
     '#title' => t('Publisher key'),
-    '#default_value' => variable_get('ayah_publisher_key', ''),
+    '#default_value' => $config->get('publisher_key', ''),
     '#description' => t('The Publisher Key associated with your domain on the <a href="http://portal.areyouahuman.com/" target="_blank">portal</a>'),
   );
 
   // Scoring key.
-  $form['ayah_scoring_key'] = array(
+  $form['scoring_key'] = array(
     '#type' => 'textfield',
     '#title' => t('Scoring key'),
-    '#default_value' => variable_get('ayah_scoring_key', ''),
+    '#default_value' => $config->get('scoring_key'),
     '#description' => t('The Scoring Key associated with your domain on the <a href="http://portal.areyouahuman.com/" target="_blank">portal</a>'),
   );
 
-  $form = system_settings_form($form);
-
+  // Add a submit button
+  $form['actions']['#type'] = 'actions';
+  $form['actions']['submit'] = array(
+    '#type' => 'submit',
+    '#value' => t('Save configuration'),
+  );
   $form['#submit'][] = 'ayah_admin_settings_submit';
 
   return $form;
@@ -109,7 +115,7 @@ function theme_ayah_admin_settings_ayah_listforms($variables) {
   }
   // For new ayah form.
   $row = array();
-  $row[] = backdrop_render($form['ayah_new_ayah_form']['form_id']);
+  $row[] = backdrop_render($form['new_ayah_form']['form_id']);
   $row[] = '';
   $rows[] = $row;
 
@@ -121,9 +127,9 @@ function theme_ayah_admin_settings_ayah_listforms($variables) {
  * Validation handler for ayah_admin_settings form.
  */
 function ayah_admin_settings_validate($form, $form_state) {
-  $form_id = $form_state['values']['ayah_form_id_overview']['ayah_new_ayah_form']['form_id'];
+  $form_id = $form_state['values']['ayah_form_id_overview']['new_ayah_form']['form_id'];
   if (!preg_match('/^[a-z0-9_]*$/', $form_id)) {
-    form_set_error('ayah_form_id_overview][ayah_new_ayah_form][form_id', t('Illegal form_id'));
+    form_set_error('ayah_form_id_overview][new_ayah_form][form_id', t('Illegal form_id'));
   }
 }
 
@@ -138,12 +144,18 @@ function ayah_admin_settings_submit($form, &$form_state) {
     }
   }
   // Add new ayah form?
-  $ayah_new_form_id = $form_state['values']['ayah_form_id_overview']['ayah_new_ayah_form']['form_id'];
+  $ayah_new_form_id = $form_state['values']['ayah_form_id_overview']['new_ayah_form']['form_id'];
   if (!empty($ayah_new_form_id)) {
-    $ayah_type = $form_state['values']['ayah_form_id_overview']['ayah_new_ayah_form']['new_add_game'];
+    $ayah_type = $form_state['values']['ayah_form_id_overview']['new_ayah_form']['new_add_game'];
     ayah_set_form_id_setting($ayah_new_form_id, $ayah_type);
     backdrop_set_message(t('Added ayah form.'), 'status');
   }
+  $config = config('ayah.settings');
+  $config->set('publisher_key', $form_state['values']['publisher_key']);
+  $config->set('scoring_key', $form_state['values']['scoring_key']);
+  $config->set('allow_on_admin_pages', $form_state['values']['allow_on_admin_pages']);
+  $config->set('form_finder', $form_state['values']['form_finder']);
+  $config->save();
 }
 
 /**
