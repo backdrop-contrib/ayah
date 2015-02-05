@@ -42,10 +42,28 @@ function ayah_uninstall() {
 }
 
 /**
- * Clears ayah placement cache to ensure cache is rebuilt.
+ * Migrate the AYAH variables to configuration management.
  */
-function ayah_update_7100() {
+function ayah_update_1000() {
   $config = config('ayah.settings');
-  $config->set('placement_map_cache', NULL);
+  $variables = array(
+    'allow_on_admin_pages',
+    'forms',
+    'form_finder,',
+    'placement_map_cache',
+    'publisher_key',
+    'scoring_key',
+  );
+  foreach($variables as $variable) {
+    $config->set($variable, update_variable_get('ayah_' . $variable));
+    update_variable_del('ayah_' . $variable);
+  }
   $config->save();
+}
+
+/**
+ * Implements hook_update_last_removed().
+ */
+function ayah_update_last_removed() {
+  return 7000;
 }
