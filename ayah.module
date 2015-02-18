@@ -155,7 +155,7 @@ function ayah_form_alter(&$form, $form_state, $form_id) {
   // Add a warning about caching on the Perfomance settings page.
   if ($form_id == 'system_performance_settings') {
     $icon = theme('image', array(
-      'path' => 'misc/watchdog-warning.png',
+      'uri' => 'core/misc/watchdog-warning.png',
       'width' => 18,
       'height' => 18,
       'alt' => t('warning'),
