@@ -1,3 +1,7 @@
+**WARNING**: Are You a Human is shutting down the PlayThru service. You can read more about it here: http://blog.areyouahuman.com/goodbye_playthru
+
+Please remove the module from your site before March 1st, 2016.
+
 Summary
 -------
 
